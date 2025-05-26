@@ -51,59 +51,53 @@ import serial, time, hal
 
 
 c = hal.component("arduino") 	#name that we will cal pins from in hal
-connection = '/dev/ttyACM0' 	#this is the port your Arduino is connected to. You can check with ""sudo dmesg | grep tty"" in Terminal
+# --- CONFIGURATION FOR ARDUINO NANO: FEED OVERRIDE (A0), SPINDLE OVERRIDE (A1), POWER SWITCH (D2), WS2812B LED (D3) ---
+connection = '/dev/ttyACM0'  # Set to your Arduino's serial port (e.g., '/dev/ttyUSB0' or '/dev/ttyACM0')
 
 
 # Set how many Inputs you have programmed in Arduino and which pins are Inputs, Set Inputs = 0 to disable
-Inputs = 2 
-InPinmap = [8,9] #Which Pins are Inputs?
+Inputs = 1
+InPinmap = [2]  # D2 for power on switch
 
 # Set how many Toggled ("sticky") Inputs you have programmed in Arduino and which pins are Toggled Inputs , Set SInputs = 0 to disable
-SInputs = 1
-sInPinmap = [10] #Which Pins are SInputs?
+SInputs = 0
+sInPinmap = []
 
 
 # Set how many Outputs you have programmed in Arduino and which pins are Outputs, Set Outputs = 0 to disable
-Outputs = 2				#9 Outputs, Set Outputs = 0 to disable
-OutPinmap = [11,12]	#Which Pins are Outputs?
+Outputs = 0
+OutPinmap = []
 
 # Set how many PWM Outputs you have programmed in Arduino and which pins are PWM Outputs, you can set as many as your Arduino has PWM pins. List the connected pins below.
-PwmOutputs = 0			#number of PwmOutputs, Set PwmOutputs = 0 to disable 
-PwmOutPinmap = [11,12]	#PwmPutput connected to Pin 11 & 12
+PwmOutputs = 0
+PwmOutPinmap = []
 
 # Set how many Analog Inputs you have programmed in Arduino and which pins are Analog Inputs, you can set as many as your Arduino has Analog pins. List the connected pins below.
-AInputs = 0				#number of AInputs, Set AInputs = 0 to disable 
-AInPinmap = [1]			#Potentiometer connected to Pin 1 (A0)
+AInputs = 2
+AInPinmap = [0, 1]  # A0 (feed override), A1 (spindle override)
 
 
 
 # Set how many Latching Analog Inputs you have programmed in Arduino and how many latches there are, you can set as many as your Arduino has Analog pins. List the connected pins below.
-LPoti = 0				#number of LPotis, Set LPoti = 0 to disable 
-
-LPotiLatches = [[1,9],	#Poti is connected to Pin 1 (A1) and has 9 positions
-				[2,4]]	#Poti is connected to Pin 2 (A2) and has 4 positions
-
-SetLPotiValue = [1,2] 	#0 OFF - creates Pin for each Position
-					  	#1 S32 - Whole Number between -2147483648 to 2147483647
-						#2 FLOAT - 32 bit floating point value
-
-LPotiValues = [[40, 50,60,70,80,90,100,110,120],
-			   [0.001,0.01,0.1,1]]
+LPoti = 0
+LPotiLatches = []
+SetLPotiValue = []
+LPotiValues = []
 
 
 
 # Set if you have an binary encoded Selector Switch and how many positions it has (only one supported, as i don't think they are very common and propably nobody uses these anyway)
 # Set BinSelKnob = 0 to disable
-BinSelKnob = 0 	#1 enable
-BinSelKnobPos = 32
+BinSelKnob = 0
+BinSelKnobPos = 0
 
 #Do you want the Binary Encoded Selector Switches to control override Settings in LinuxCNC? This function lets you define values for each Position. 
-SetBinSelKnobValue = [[0]] #0 = disable 1= enable
-BinSelKnobvalues = [[180,190,200,0,0,0,0,0,0,0,0,0,0,0,0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170]]
+SetBinSelKnobValue = [[0]]
+BinSelKnobvalues = [[]]
 
 #Enable Quadrature Encoders
 QuadEncs = 0
-QuadEncSig = [2,2] 
+QuadEncSig = []
 #1 = send up or down signal (typical use for selecting modes in hal)
 #2 = send position signal (typical use for MPG wheel)
 
@@ -111,15 +105,15 @@ QuadEncSig = [2,2]
 #Enable Joystick support. 
 # Intended for use as MPG. useing the Joystick will update a counter, which can be used as Jog Input. 
 # Moving the Joystick will either increase or decrease the counter. Modify Jog-scale in hal to increase or decrease speed.
-JoySticks = 0	#number of installed Joysticks
-JoyStickPins = [0,1] #Pins the Joysticks are connected to. 
+JoySticks = 0
+JoyStickPins = []
 	#in this example X&Y Pins of the Joystick are connected to Pin A0& A1. 
 
 
 
 
 # Set how many Digital LED's you have connected. 
-DLEDcount = 0 
+DLEDcount = 1  # One WS2812B LED on D3
 
 
 # Support For Matrix Keypads. This requires you to install and test "xdotool". 
@@ -136,27 +130,13 @@ Keypad = 0  # Set to 1 to Activate
 LinuxKeyboardInput = 0  # set to 1 to Activate direct Keyboard integration to Linux.
 
 
-Columns = 4
-Rows = 4
-Chars = [      #here you must define as many characters as your Keypad has keys. calculate columns * rows . for example 4 *4 = 16. You can write it down like in the example for ease of readability.
- "1", "2", "3", "A",
- "4", "5", "6", "B",
- "7", "8", "9", "C",
- "Yay", "0", "#", "D"
-] 
+Columns = 0
+Rows = 0
+Chars = []
 
 # These are Settings to connect Keystrokes to Linux, you can ignore them if you only use them as LinuxCNC Inputs.
 
-Destination = [    #define, which Key should be inserted in LinuxCNC as Input or as Keystroke in Linux. 
-          #you can ignore it if you want to use all Keys as LinuxCNC Inputs.
-          # 0 = LinuxCNC 
-          # 1 = press Key in Linux
-          # 2 = write Text in Linux
-  1, 1, 1, 0,
-  1, 1, 1, 0,
-  1, 1, 1, 0, 
-  2, 1, 0, 0
-]
+Destination = []
 # Background Info:
 # The Key press is received as M Number of Key:HIGH/LOW. M2:1 would represent Key 2 beeing Pressed. M2:0 represents letting go of the key.
 # Key Numbering is calculated in an 2D Matrix. for a 4x4 Keypad the numbering of the Keys will be like this:
@@ -170,8 +150,8 @@ Destination = [    #define, which Key should be inserted in LinuxCNC as Input or
 # this is an experimental feature, meant to support MatrixKeyboards with integrated LEDs in each Key but should work with any other LED Matrix too.
 # It creates Output Halpins that can be connected to signals in LinuxCNC
 MultiplexLED = 0  # Set to 1 to Activate
-LedVccPins = 3 
-LedGndPins = 3
+LedVccPins = 0
+LedGndPins = 0
 
 
 

@@ -66,17 +66,17 @@ Communication Status      = 'E' -read/Write  -Pin State: 0:0
 //###################################################IO's###################################################
 
 
-#define INPUTS                       //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
+#define INPUTS
 #ifdef INPUTS
-  const int Inputs = 2;               //number of inputs using internal Pullup resistor. (short to ground to trigger)
-  int InPinmap[] = {8,9};
+  const int Inputs = 1;         // One digital input
+  int InPinmap[] = {2};         // D2 for power on switch
 #endif
 
-                                       //Use Arduino IO's as Toggle Inputs, which means Inputs (Buttons for example) keep HIGH State after Release and Send LOW only after beeing Pressed again.
-#define SINPUTS                        //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
-#ifdef SINPUTS
-  const int sInputs = 1;              //number of inputs using internal Pullup resistor. (short to ground to trigger)
-  int sInPinmap[] = {10};
+#define AINPUTS
+#ifdef AINPUTS
+  const int AInputs = 2;        // Two analog inputs
+  int AInPinmap[] = {0, 1};     // A0 (feed override), A1 (spindle override)
+  int smooth = 200;             // Denoising samples
 #endif
 
 #define OUTPUTS                     //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
@@ -89,14 +89,6 @@ Communication Status      = 'E' -read/Write  -Pin State: 0:0
 #ifdef PWMOUTPUTS
   const int PwmOutputs = 2;              //number of outputs
   int PwmOutPinmap[] = {12,11};
-#endif
-
-//#define AINPUTS                       //Use Arduino ADC's as Analog Inputs. Define how many Analog Inputs you want in total and then which Pins you want to be Analog Inputs.
-                                        //Note that Analog Pin numbering is different to the Print on the PCB.
-#ifdef AINPUTS
-  const int AInputs = 1;
-  int AInPinmap[] = {0};                //Potentiometer for SpindleSpeed override
-  int smooth = 200;                     //number of samples to denoise ADC, try lower numbers on your setup 200 worked good for me.
 #endif
 
 
@@ -197,9 +189,9 @@ const float scalingFactor = 0.01;   // Scaling factor to control the impact of d
 
 #define STATUSLED
 #ifdef STATUSLED
-  const int StatLedPin = 13;                //Pin for Status LED
-  const int StatLedErrDel[] = {1000,10};   //Blink Timing for Status LED Error (no connection)
-  const int DLEDSTATUSLED = 0;              //set to 1 to use Digital LED instead. set StatLedPin to the according LED number in the chain.
+  const int StatLedPin = 0;     // Use the first (and only) WS2812B as status LED
+  const int StatLedErrDel[] = {1000,10};
+  const int DLEDSTATUSLED = 1;  // Use digital LED for status
 #endif
 
 
@@ -224,39 +216,22 @@ If you want the LED to be off just define {0,0,0}, .
 If you use STATUSLED, it will also take the colors of your definition here.
 */
 
-//#define DLED
+#define DLED
 #ifdef DLED
   #include <Adafruit_NeoPixel.h>
 
-  const int DLEDcount = 8;              //How Many DLED LED's are you going to connect?
-  const int DLEDPin = 4;                  //Where is DI connected to?
-  const int DLEDBrightness = 70;         //Brightness of the LED's 0-100%
+  const int DLEDcount = 1;      // One WS2812B LED
+  const int DLEDPin = 3;        // D3 for WS2812B
+  const int DLEDBrightness = 70;// Brightness (0-100%)
 
   int DledOnColors[DLEDcount][3] = {
-                  {0,0,255},
-                  {255,0,0},
-                  {0,255,0},
-                  {0,255,0},
-                  {0,255,0},
-                  {0,255,0},
-                  {0,255,0},
-                  {0,255,0}
-                  };
-
+    {0, 255, 0}                 // Green when ON
+  };
   int DledOffColors[DLEDcount][3] = {
-                  {0,0,0},
-                  {0,0,0},
-                  {255,0,0},
-                  {255,0,0},
-                  {255,0,0},
-                  {0,0,255},
-                  {0,0,255},
-                  {0,0,255}
-                };
+    {0, 0, 0}                   // Off when OFF
+  };
 
-
-Adafruit_NeoPixel strip(DLEDcount, DLEDPin, NEO_GRB + NEO_KHZ800);//Color sequence is different for LED Chipsets. Use RGB for WS2812  or GRB for PL9823.
-
+  Adafruit_NeoPixel strip(DLEDcount, DLEDPin, NEO_GRB + NEO_KHZ800);
 
 #endif
 /*
