@@ -339,9 +339,9 @@ loadusr arduino-connector
 loadrt scale count=2
 addf scale.0 servo-thread
 addf scale.1 servo-thread
-setp scale.0.gain [expr (1.2-0.5)/1023.0]   # ~0.000684
+setp scale.0.gain 0.000684
 setp scale.0.offset 0.5
-setp scale.1.gain [expr (1.0-0.5)/1023.0]   # ~0.000489
+setp scale.1.gain 0.000489
 setp scale.1.offset 0.5
 
 # Enable direct value mode for HALUI overrides
