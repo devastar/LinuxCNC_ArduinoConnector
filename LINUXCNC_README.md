@@ -72,7 +72,7 @@ These expect a value in the range 0.5–1.2 (feed override, 50%–120%) and 0.5�
 ### **Sample HAL Snippet**
 ```hal
 # Start the Arduino connector
-loadusr -Wn arduino python3 /path/to/arduino-connector.py
+loadusr arduino-connector
 
 # Scale Arduino analog input (0–1023) to feed override (0.5–1.2)
 loadrt scale count=2
