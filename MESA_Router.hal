@@ -344,17 +344,13 @@ setp scale.0.offset 0.5
 setp scale.1.gain 0.000489
 setp scale.1.offset 0.5
 
-# Enable direct value mode for HALUI overrides
-setp halui.feed-override.direct-value true
-setp halui.spindle.0.override.direct-value true
+# Enable analog override for Gmoccapy sliders
+setp gmoccapy.feed.feed-override.analog-enable true
+setp gmoccapy.spindle.spindle-override.analog-enable true
 
-# Connect Arduino analog inputs to scale components
-net feed-raw      arduino.ain.0 => scale.0.in
-net spindle-raw   arduino.ain.1 => scale.1.in
-
-# Connect scaled outputs to HALUI override pins
-net feed-override     scale.0.out => halui.feed-override.value
-net spindle-override  scale.1.out => halui.spindle.0.override.value
+# Connect Arduino analog inputs (after scaling) to Gmoccapy override sliders
+net feed-override     scale.0.out => gmoccapy.feed.feed-override.direct-value
+net spindle-override  scale.1.out => gmoccapy.spindle.spindle-override.direct-value
 
 # Connect power switch and status LED as before
 net power-switch      arduino.din.2 => iocontrol.0.user-enable-out
