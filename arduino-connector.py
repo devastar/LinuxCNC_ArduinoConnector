@@ -256,7 +256,7 @@ if QuadEncs > 0:
 c.ready()
 
 #setup Serial connection
-arduino = serial.Serial(connection, 115200, timeout=1, xonxoff=False, rtscts=False, dsrdtr=True)
+arduino = serial.Serial(connection, 115200, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False)
 ######## GlobalVariables ########
 firstcom = 0
 event = time.time()
