@@ -61,18 +61,46 @@ This guide explains how to connect your Arduino Nano (with the provided sketch) 
 ---
 
 ## 4. Update Your LinuxCNC HAL File
-- In your machine's `.hal` file, add:
-  ```hal
-  # Start the Arduino connector
-  loadusr -Wn arduino python3 /path/to/arduino-connector.py
 
-  # Map Arduino pins to LinuxCNC signals
-  net feed-override     arduino.ain.0 => motion.feed-override
-  net spindle-override  arduino.ain.1 => motion.spindle-override
-  net power-switch      arduino.din.2 => iocontrol.0.user-enable-out
-  net machine-enabled   iocontrol.0.user-enable-out => arduino.dled.0
-  ```
-  > **Note:** Pin names are as created by the script: `ain.0`, `ain.1`, `din.2`, `dled.0`.
+### **Feed and Spindle Override with HALUI**
+LinuxCNC does **not** provide `motion.feed-override` or `motion.spindle-override` pins. Instead, use the HALUI pins:
+- `halui.feed-override.value` (float, in)
+- `halui.spindle.0.override.value` (float, in)
+
+These expect a value in the range 0.5–1.2 (feed override, 50%–120%) and 0.5–1.0 (spindle override, 50%–100%) by default. You must scale the Arduino analog input (0–1023) to this range.
+
+### **Sample HAL Snippet**
+```hal
+# Start the Arduino connector
+loadusr -Wn arduino python3 /path/to/arduino-connector.py
+
+# Scale Arduino analog input (0–1023) to feed override (0.5–1.2)
+loadrt scale count=2
+addf scale.0 servo-thread
+addf scale.1 servo-thread
+setp scale.0.gain [expr (1.2-0.5)/1023.0]   # ~0.000684
+setp scale.0.offset 0.5
+setp scale.1.gain [expr (1.0-0.5)/1023.0]   # ~0.000489
+setp scale.1.offset 0.5
+
+# Enable direct value mode for HALUI overrides
+setp halui.feed-override.direct-value true
+setp halui.spindle.0.override.direct-value true
+
+# Connect Arduino analog inputs to scale components
+net feed-raw      arduino.ain.0 => scale.0.in
+net spindle-raw   arduino.ain.1 => scale.1.in
+
+# Connect scaled outputs to HALUI override pins
+net feed-override     scale.0.out => halui.feed-override.value
+net spindle-override  scale.1.out => halui.spindle.0.override.value
+
+# Connect power switch and status LED as before
+net power-switch      arduino.din.2 => iocontrol.0.user-enable-out
+net machine-enabled   iocontrol.0.user-enable-out => arduino.dled.0
+```
+
+> **Note:** Adjust the scaling as needed for your desired override range.
 
 ---
 
