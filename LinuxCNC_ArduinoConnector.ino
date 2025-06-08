@@ -79,7 +79,7 @@ Communication Status      = 'E' -read/Write  -Pin State: 0:0
   int smooth = 200;             // Denoising samples
 #endif
 
-#define OUTPUTS                     //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
+//#define OUTPUTS                     //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
 #ifdef OUTPUTS
   const int Outputs = 2;              //number of outputs
   int OutPinmap[] = {11,12};
