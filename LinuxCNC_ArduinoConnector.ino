@@ -189,9 +189,9 @@ const float scalingFactor = 0.01;   // Scaling factor to control the impact of d
 
 #define STATUSLED
 #ifdef STATUSLED
-  const int StatLedPin = 0;     // Use the first (and only) WS2812B as status LED
-  const int StatLedErrDel[] = {1000,10};
-  const int DLEDSTATUSLED = 1;  // Use digital LED for status
+  const int StatLedPin = 0;                //Pin for Status LED
+  const int StatLedErrDel[] = {1000,10};   //Blink Timing for Status LED Error (no connection)
+  const int DLEDSTATUSLED = 1;              //set to 1 to use Digital LED instead. set StatLedPin to the according LED number in the chain.
 #endif
 
 
@@ -222,16 +222,17 @@ If you use STATUSLED, it will also take the colors of your definition here.
 
   const int DLEDcount = 1;      // One WS2812B LED
   const int DLEDPin = 3;        // D3 for WS2812B
-  const int DLEDBrightness = 70;// Brightness (0-100%)
+  const int DLEDBrightness = 100;// Brightness (0-100%)
 
   int DledOnColors[DLEDcount][3] = {
     {0, 255, 0}                 // Green when ON
   };
   int DledOffColors[DLEDcount][3] = {
-    {0, 0, 0}                   // Off when OFF
+    {255, 0, 0}                   // Off when OFF
   };
 
-  Adafruit_NeoPixel strip(DLEDcount, DLEDPin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel strip(DLEDcount, DLEDPin, NEO_GRB + NEO_KHZ800);//Color sequence is different for LED Chipsets. Use RGB for WS2812  or GRB for PL9823.
+
 
 #endif
 /*
