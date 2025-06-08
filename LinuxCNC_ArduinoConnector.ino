@@ -221,7 +221,7 @@ If you use STATUSLED, it will also take the colors of your definition here.
   #include <Adafruit_NeoPixel.h>
 
   const int DLEDcount = 1;      // One WS2812B LED
-  const int DLEDPin = 3;        // D3 for WS2812B
+  const int DLEDPin = 8;        // D3 for WS2812B
   const int DLEDBrightness = 100;// Brightness (0-100%)
 
   int DledOnColors[DLEDcount][3] = {
