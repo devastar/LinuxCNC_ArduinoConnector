@@ -228,7 +228,7 @@ If you use STATUSLED, it will also take the colors of your definition here.
     {0, 255, 0}                 // Green when ON
   };
   int DledOffColors[DLEDcount][3] = {
-    {255, 0, 0}                   // Off when OFF
+    {255, 0, 0}                   // Red when OFF
   };
 
 Adafruit_NeoPixel strip(DLEDcount, DLEDPin, NEO_GRB + NEO_KHZ800);//Color sequence is different for LED Chipsets. Use RGB for WS2812  or GRB for PL9823.
