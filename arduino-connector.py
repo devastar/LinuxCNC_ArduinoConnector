@@ -56,8 +56,8 @@ connection = '/dev/ttyACM0'  # Set to your Arduino's serial port (e.g., '/dev/tt
 
 
 # Set how many Inputs you have programmed in Arduino and which pins are Inputs, Set Inputs = 0 to disable
-Inputs = 1
-InPinmap = [2]  # D2 for power on switch
+Inputs = 3
+InPinmap = [2,3,4]  # D2 for power on switch, D3 Start Cycle, D4 Stop Cycle
 
 # Set how many Toggled ("sticky") Inputs you have programmed in Arduino and which pins are Toggled Inputs , Set SInputs = 0 to disable
 SInputs = 0

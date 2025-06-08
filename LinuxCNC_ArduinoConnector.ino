@@ -68,8 +68,8 @@ Communication Status      = 'E' -read/Write  -Pin State: 0:0
 
 #define INPUTS
 #ifdef INPUTS
-  const int Inputs = 1;         // One digital input
-  int InPinmap[] = {2};         // D2 for power on switch
+  const int Inputs = 3;         // One digital input
+  int InPinmap[] = {2,3,4};         // D2 for power on switch
 #endif
 
 #define AINPUTS
