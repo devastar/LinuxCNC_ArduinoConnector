@@ -191,7 +191,7 @@ const float scalingFactor = 0.01;   // Scaling factor to control the impact of d
 #ifdef STATUSLED
   const int StatLedPin = 0;                //Pin for Status LED
   const int StatLedErrDel[] = {1000,10};   //Blink Timing for Status LED Error (no connection)
-  const int DLEDSTATUSLED = 1;              //set to 1 to use Digital LED instead. set StatLedPin to the according LED number in the chain.
+  const int DLEDSTATUSLED = 0;              //set to 1 to use Digital LED instead. set StatLedPin to the according LED number in the chain.
 #endif
 
 
